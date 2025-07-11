@@ -51,19 +51,13 @@ def dashboard():
     if 'user' not in session:
         return redirect(url_for('login'))
 
-    @app.route('/dashboard')
-def dashboard():
-    if 'user' not in session:
-        return redirect(url_for('login'))
-    else:
-        return render_template(
-            'dashboard.html',
-            user=session['user'],
-            role=session.get('role', 'member'),
-            current_year=datetime.now().year,
-            current_date=datetime.now().strftime('%A, %B %d, %Y')
-        )
-
+    return render_template(
+        'dashboard.html',
+        user=session['user'],
+        role=session.get('role', 'member'),
+        current_year=datetime.now().year,
+        current_date=datetime.now().strftime('%A, %B %d, %Y')
+    )
 
 @app.route('/logout')
 def logout():
