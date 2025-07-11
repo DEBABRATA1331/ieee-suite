@@ -33,6 +33,9 @@ def login():
         users = load_users()
         username = request.form['username']
         password = request.form['password']
+        # Debug print statements
+        print(f"[DEBUG] Trying login for username: {username}")
+        print(f"[DEBUG] Password entered: {password}")
 
         if username in users and check_password_hash(users[username]['password'], password):
             session['user'] = username
