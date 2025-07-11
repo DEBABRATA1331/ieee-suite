@@ -18,7 +18,29 @@ users = {
         "password": generate_password_hash("bankieee"),
         "role": "treasurer"
     },
+    "webmaster": {{
+    "chair": {
+        "password": "pbkdf2:sha256:260000$RtTj7nN... (truncated)",
+        "role": "chair"
+    },
+    "secretary": {
+        "password": "pbkdf2:sha256:260000$aEnWLoE... (truncated)",
+        "role": "secretary"
+    },
+    "vicechair": {
+        "password": "pbkdf2:sha256:260000$AklHqQO... (truncated)",
+        "role": "vicechair"
+    },
+    "treasurer": {
+        "password": "pbkdf2:sha256:260000$V6wMk9z... (truncated)",
+        "role": "treasurer"
+    },
     "webmaster": {
+        "password": "pbkdf2:sha256:260000$EUFzYVi... (truncated)",
+        "role": "webmaster"
+    }
+}
+
         "password": generate_password_hash("ieeedev"),
         "role": "webmaster"
     }

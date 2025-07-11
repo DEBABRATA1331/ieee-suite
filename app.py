@@ -8,21 +8,24 @@ from dotenv import load_dotenv
 import os
 import json
 
-# Load environment variables from .env
+# Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.getenv("SECRET_KEY", "fallback-secret")  # secure from .env
+app.secret_key = os.getenv("SECRET_KEY", "fallback-secret")
 
-# Register Blueprints
+# Register blueprints
 app.register_blueprint(notice_bp)
 app.register_blueprint(feedback_bp)
 app.register_blueprint(excom_bp)
 
-# Load users from users.json
+# Load users safely from users.json
 def load_users():
-    with open('users.json') as f:
-        return json.load(f)
+    try:
+        with open('users.json') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
