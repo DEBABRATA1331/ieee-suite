@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard | IEEE ExCom</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
         body {
             background: linear-gradient(135deg, #e0f7ff, #f6f9ff);
             font-family: 'Segoe UI', sans-serif;
             margin: 0;
             padding: 40px;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: auto;
         }
 
         .logout {
@@ -102,48 +107,43 @@
         <a href="{{ url_for('logout') }}">Logout</a>
     </div>
 
-    <h1>Welcome, {{ user|capitalize }} </h1>
-    <p class="subtext">Today is {{ current_date }}. Have a productive day!</p>
+    <main>
+        <h1>Welcome, {{ user|capitalize }}</h1>
+        <p class="subtext">Today is {{ current_date }}. Have a productive day!</p>
 
-    <div class="grid">
-        {% if session.role == 'chair' %}
-        <div class="card">
-            <h3>📄 Notice Generator</h3>
-            <p>Create formal notices with logos and signatures.</p>
-            <a href="/notice">Open</a>
+        <div class="grid">
+            {% if session.role == 'chair' %}
+            <div class="card">
+                <h3>Notice Generator</h3>
+                <p>Create formal notices with logos and signatures.</p>
+                <a href="{{ url_for('notice.generate_notice') }}">Open</a>
+            </div>
+            {% endif %}
+
+            <div class="card">
+                <h3>Bulk Email Sender</h3>
+                <p>Send emails to members using a CSV upload.</p>
+                <a href="{{ url_for('excom.bulk_email') }}">Open</a>
+            </div>
+
+            <div class="card">
+                <h3>MoM Generator</h3>
+                <p>Generate Minutes of Meeting documents easily.</p>
+                <a href="{{ url_for('excom.mom_generator') }}">Open</a>
+            </div>
+
+            <div class="card">
+                <h3>Feedback Analyzer</h3>
+                <p>Upload and analyze feedback forms from events.</p>
+                <a href="{{ url_for('feedback.feedback_analyzer') }}">Open</a>
+            </div>
         </div>
-        {% endif %}
 
-        <div class="card">
-            <h3>Bulk Email Sender</h3>
-            <p>Send emails to members using a CSV upload.</p>
-            <a href="/email">Open</a>
-        </div>
-
-        <div class="card">
-            <h3>MoM Generator</h3>
-            <p>Generate Minutes of Meeting documents easily.</p>
-            <a href="/mom">Open</a>
-        </div>
-
-        <div class="card">
-            <h3>Feedback Analyzer</h3>
-            <p>Upload and analyze feedback forms from events.</p>
-            <a href="/feedback">Open</a>
-        </div>
-
-        <!-- Optional future feature cards -->
-        {# <div class="card">
-            <h3>Event Metrics</h3>
-            <p>View participation and impact stats.</p>
-            <a href="#">Coming Soon</a>
-        </div> #}
-    </div>
-
-    <footer>
-        <hr>
-        <p>IEEE VSSUT Student Branch &copy; {{ current_year }} | For ExCom internal use only</p>
-        <p><em>Announcements:</em> <strong>No new meetings scheduled this week.</strong></p>
-    </footer>
+        <footer>
+            <hr>
+            <p>IEEE VSSUT Student Branch &copy; {{ current_year }} | For ExCom internal use only</p>
+            <p><em>Announcements:</em> <strong>No new meetings scheduled this week.</strong></p>
+        </footer>
+    </main>
 </body>
 </html>
