@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | IEEE ExCom</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e0f7ff, #f6f9ff);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .logout {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 14px;
+        }
+
+        .logout a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .subtext {
+            text-align: center;
+            color: #555;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-size: 16px;
+            transition: transform 0.3s ease, background 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            background: #f0f8ff;
+        }
+
+        .card a {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .card a:hover {
+            background: #0056b3;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        footer hr {
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="logout">
+        Logged in as <strong>{{ user|capitalize }}</strong> |
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+
+    <h1>Welcome, {{ user|capitalize }} </h1>
+    <p class="subtext">Today is {{ current_date }}. Have a productive day!</p>
+
+    <div class="grid">
+        {% if session.role == 'chair' %}
+        <div class="card">
+            <h3>📄 Notice Generator</h3>
+            <p>Create formal notices with logos and signatures.</p>
+            <a href="/notice">Open</a>
+        </div>
+        {% endif %}
+
+        <div class="card">
+            <h3>Bulk Email Sender</h3>
+            <p>Send emails to members using a CSV upload.</p>
+            <a href="/email">Open</a>
+        </div>
+
+        <div class="card">
+            <h3>MoM Generator</h3>
+            <p>Generate Minutes of Meeting documents easily.</p>
+            <a href="/mom">Open</a>
+        </div>
+
+        <div class="card">
+            <h3>Feedback Analyzer</h3>
+            <p>Upload and analyze feedback forms from events.</p>
+            <a href="/feedback">Open</a>
+        </div>
+
+        <!-- Optional future feature cards -->
+        {# <div class="card">
+            <h3>Event Metrics</h3>
+            <p>View participation and impact stats.</p>
+            <a href="#">Coming Soon</a>
+        </div> #}
+    </div>
+
+    <footer>
+        <hr>
+        <p>IEEE VSSUT Student Branch &copy; {{ current_year }} | For ExCom internal use only</p>
+        <p><em>Announcements:</em> <strong>No new meetings scheduled this week.</strong></p>
+    </footer>
+</body>
+</html>
