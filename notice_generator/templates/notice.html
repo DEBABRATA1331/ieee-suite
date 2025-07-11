@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notice Generator</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e0f7fa, #f1f8ff);
+            font-family: 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .floating-form {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: 60px auto;
+            width: 90%;
+            max-width: 600px;
+            transform-style: preserve-3d;
+            animation: popIn 1s ease forwards;
+        }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notice Generator</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e0f7fa, #f1f8ff);
+            font-family: 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background: #121212;
+            color: #f5f5f5;
+        }
+
+        .toggle-wrapper {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            z-index: 10;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 28px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc;
+            border-radius: 34px;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 3px;
+            background-color: white;
+            border-radius: 50%;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #007bff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .floating-form {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: 60px auto;
+            width: 90%;
+            max-width: 600px;
+            transform-style: preserve-3d;
+            animation: popIn 1s ease forwards;
+            resize: both;
+            overflow: auto;
+        }
+
+        body.dark-mode .floating-form {
+            background: #1e1e1e;
+            box-shadow: 0 0 25px rgba(255,255,255,0.05);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        .preview-img {
+            max-width: 100px;
+            margin: 10px 0;
+            display: block;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            transition: transform 0.3s;
+        }
+
+        .preview-img:hover {
+            transform: scale(1.1) rotate(3deg);
+        }
+
+        .animate-button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            background: linear-gradient(270deg, #0066ff, #00ccff);
+            background-size: 400% 400%;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            animation: gradientSlide 3s ease infinite, pulse 2s infinite;
+            transition: transform 0.3s;
+        }
+
+        .animate-button:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes gradientSlide {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 123, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
+        }
+
+        .loader-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .bar-loader {
+            width: 100%;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 20px;
+        }
+
+        .bar-loader .bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00bcd4, #007bff);
+            animation: loadbar 2s ease-in-out infinite;
+        }
+
+        @keyframes loadbar {
+            0% {width: 0%;}
+            50% {width: 100%;}
+            100% {width: 0%;}
+        }
+
+        .confetti {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #00c853;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 12px;
+            position: fixed;
+            z-index: 1000;
+            bottom: 30px;
+            right: 30px;
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="toggle-wrapper">
+        <label class="switch">
+            <input type="checkbox" id="toggleMode" onclick="toggleDarkMode()">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <form class="floating-form" method="post" enctype="multipart/form-data" onsubmit="showLoader()">
+        <h2 style="text-align:center; animation: fadeIn 1s ease;">📄 Generate Formal Notice</h2>
+
+        <label>Subject:</label>
+        <input type="text" name="subject" required>
+
+        <label>Copy To (Recipient):</label>
+        <input type="text" name="recipient" required>
+
+        <label>Body:</label>
+        <textarea name="body" rows="5" required></textarea>
+
+        <label>Date (optional):</label>
+        <input type="text" name="date" placeholder="Leave blank for today's date">
+
+        <label>Your Name:</label>
+        <input type="text" name="your_name" required>
+
+        <label>Your Position:</label>
+        <input type="text" name="your_pos" required>
+
+        <label>Upload Logo (optional):</label>
+        <input type="file" name="logo" accept="image/*" onchange="previewImage(this, 'logo-preview')">
+        <img id="logo-preview" class="preview-img hidden">
+
+        <label>Upload Signature (optional):</label>
+        <input type="file" name="signature" accept="image/*" onchange="previewImage(this, 'signature-preview')">
+        <img id="signature-preview" class="preview-img hidden">
+
+        <div class="loader-container" id="loader">
+            <div class="bar-loader">
+                <div class="bar"></div>
+            </div>
+        </div>
+
+        <button type="submit" class="animate-button">✨ Generate Notice</button>
+    </form>
+
+    <div class="toast" id="success-toast">🎉 Notice generated successfully!</div>
+    <canvas class="confetti" id="confetti"></canvas>
+
+    <script>
+        function previewImage(input, id) {
+            const img = document.getElementById(id);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function showLoader() {
+            document.getElementById('loader').style.display = 'flex';
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // Simulate showing toast and confetti on successful generation
+        window.addEventListener('load', () => {
+            const toast = document.getElementById('success-toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+
+            const canvas = document.getElementById("confetti");
+            const ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const confetti = Array.from({length: 120}, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                r: Math.random() * 6 + 4,
+                d: Math.random() * 50 + 10,
+                color: `hsl(${Math.random() * 360}, 100%, 50%)`
+            }));
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                confetti.forEach(c => {
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+                    ctx.fillStyle = c.color;
+                    ctx.fill();
+                });
+                move();
+            }
+
+            function move() {
+                confetti.forEach(c => {
+                    c.y += Math.cos(c.d) + 1 + c.r / 2;
+                    c.x += Math.sin(c.d);
+                    if (c.y > canvas.height) {
+                        c.y = -10;
+                        c.x = Math.random() * canvas.width;
+                    }
+                });
+            }
+
+            function loop() {
+                draw();
+                requestAnimationFrame(loop);
+            }
+
+            loop();
+        });
+    </script>
+</body>
+</html>
+
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        .preview-img {
+            max-width: 100px;
+            margin: 10px 0;
+            display: block;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            transition: transform 0.3s;
+        }
+
+        .preview-img:hover {
+            transform: scale(1.1) rotate(3deg);
+        }
+
+        .loader-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .bar-loader {
+            width: 100%;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 20px;
+        }
+
+        .bar-loader .bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00bcd4, #007bff);
+            animation: loadbar 2s ease-in-out infinite;
+        }
+
+        @keyframes loadbar {
+            0% {width: 0%;}
+            50% {width: 100%;}
+            100% {width: 0%;}
+        }
+
+        .confetti {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #00c853;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 12px;
+            position: fixed;
+            z-index: 1000;
+            bottom: 30px;
+            right: 30px;
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <form class="floating-form" method="post" enctype="multipart/form-data" onsubmit="showLoader()">
+        <h2 style="text-align:center; animation: fadeIn 1s ease;">📄 Generate Formal Notice</h2>
+
+        <label>Subject:</label>
+        <input type="text" name="subject" required>
+
+        <label>Copy To (Recipient):</label>
+        <input type="text" name="recipient" required>
+
+        <label>Body:</label>
+        <textarea name="body" rows="5" required></textarea>
+
+        <label>Date (optional):</label>
+        <input type="text" name="date" placeholder="Leave blank for today's date">
+
+        <label>Your Name:</label>
+        <input type="text" name="your_name" required>
+
+        <label>Your Position:</label>
+        <input type="text" name="your_pos" required>
+
+        <label>Upload Logo (optional):</label>
+        <input type="file" name="logo" accept="image/*" onchange="previewImage(this, 'logo-preview')">
+        <img id="logo-preview" class="preview-img hidden">
+
+        <label>Upload Signature (optional):</label>
+        <input type="file" name="signature" accept="image/*" onchange="previewImage(this, 'signature-preview')">
+        <img id="signature-preview" class="preview-img hidden">
+
+        <div class="loader-container" id="loader">
+            <div class="bar-loader">
+                <div class="bar"></div>
+            </div>
+        </div>
+
+        <button type="submit" class="animate-button">✨ Generate Notice</button>
+    </form>
+
+    <div class="toast" id="success-toast">🎉 Notice generated successfully!</div>
+    <canvas class="confetti" id="confetti"></canvas>
+
+    <script>
+        function previewImage(input, id) {
+            const img = document.getElementById(id);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function showLoader() {
+            document.getElementById('loader').style.display = 'flex';
+        }
+
+        // Simulate showing toast and confetti on successful generation
+        window.addEventListener('load', () => {
+            const toast = document.getElementById('success-toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+
+            const canvas = document.getElementById("confetti");
+            const ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const confetti = Array.from({length: 120}, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                r: Math.random() * 6 + 4,
+                d: Math.random() * 50 + 10,
+                color: `hsl(${Math.random() * 360}, 100%, 50%)`
+            }));
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                confetti.forEach(c => {
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+                    ctx.fillStyle = c.color;
+                    ctx.fill();
+                });
+                move();
+            }
+
+            function move() {
+                confetti.forEach(c => {
+                    c.y += Math.cos(c.d) + 1 + c.r / 2;
+                    c.x += Math.sin(c.d);
+                    if (c.y > canvas.height) {
+                        c.y = -10;
+                        c.x = Math.random() * canvas.width;
+                    }
+                });
+            }
+
+            function loop() {
+                draw();
+                requestAnimationFrame(loop);
+            }
+
+            loop();
+        });
+    </script>
+</body>
+</html>

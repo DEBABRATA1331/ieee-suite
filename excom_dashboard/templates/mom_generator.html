@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MoM Generator | IEEE ExCom</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f0faff, #eef5ff);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .mom-form {
+            background: white;
+            max-width: 640px;
+            margin: auto;
+            padding: 40px;
+            border-radius: 14px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            animation: floatUp 1s ease forwards;
+            resize: both;
+            overflow: auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            animation: fadeInDown 1s ease;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 6px rgba(0, 123, 255, 0.2);
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, #0066ff, #00ccff);
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+            transition: transform 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 12px;
+            position: fixed;
+            z-index: 1000;
+            bottom: 30px;
+            right: 30px;
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.5); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 123, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
+        }
+    </style>
+</head>
+<body>
+    <form class="mom-form" method="post">
+        <h2>🧾 Minutes of Meeting Generator</h2>
+
+        <p style="text-align:center;">Hello <strong>{{ user|capitalize }}</strong>, role: <strong>{{ role|capitalize }}</strong></p>
+
+        <label>Date of Meeting</label>
+        <input type="date" name="date" value="{{ today }}" required>
+
+        <label>Agenda</label>
+        <input type="text" name="agenda" placeholder="e.g., Planning IEEE Day 2025" required>
+
+        <label>Attendees</label>
+        <input type="text" name="attendees" placeholder="Comma-separated names" required>
+
+        <label>Discussion Summary</label>
+        <textarea name="discussion" rows="6" placeholder="Summarize discussion points here..." required></textarea>
+
+        <button type="submit">✨ Generate MoM</button>
+    </form>
+
+    {% if message %}
+        <div class="toast show">{{ message }}</div>
+    {% endif %}
+</body>
+</html>

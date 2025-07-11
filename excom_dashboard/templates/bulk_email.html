@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bulk Email Sender | IEEE ExCom</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e6f2ff, #f9fbff);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .email-form {
+            background: white;
+            padding: 40px;
+            max-width: 640px;
+            margin: auto;
+            border-radius: 14px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            animation: floatUp 1s ease forwards;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        input[type="file"] {
+            padding: 6px;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 6px rgba(0, 123, 255, 0.2);
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, #0066ff, #00ccff);
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+            transition: transform 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 12px;
+            position: fixed;
+            z-index: 1000;
+            bottom: 30px;
+            right: 30px;
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.5); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 123, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
+        }
+    </style>
+</head>
+<body>
+    <form class="email-form" method="post" enctype="multipart/form-data">
+        <h2>Bulk Email Sender</h2>
+
+        <p style="text-align:center;">
+            Logged in as <strong>{{ user|capitalize }}</strong> (Role: <strong>{{ role|capitalize }}</strong>)
+        </p>
+
+        <label>Upload CSV with email list</label>
+        <input type="file" name="csv" accept=".csv" required>
+
+        <label>Email Subject</label>
+        <input type="text" name="subject" placeholder="Subject" required>
+
+        <label>Message</label>
+        <textarea name="message" rows="6" placeholder="Write your message here..." required></textarea>
+
+        <label>Optional Attachment</label>
+        <input type="file" name="attachment">
+
+        <button type="submit">Send Emails</button>
+    </form>
+
+    {% if message %}
+        <div class="toast show">{{ message }}</div>
+    {% endif %}
+</body>
+</html>
