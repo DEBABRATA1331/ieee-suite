@@ -14,6 +14,18 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "fallback-secret")
 
+#Secure session config for HTTPS (Render)
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_SAMESITE='None'
+)
+
+#Prevent caching to fix redirect/stale page issues
+@app.after_request
+def add_header(response):
+    response.headers['Cache-Control'] = 'no-store'
+    return response
+
 # Register blueprints
 app.register_blueprint(notice_bp)
 app.register_blueprint(feedback_bp)
@@ -36,19 +48,27 @@ def login():
         # Debug print statements
         print(f"[DEBUG] Trying login for username: {username}")
         print(f"[DEBUG] Password entered: {password}")
+        print(f"[DEBUG] User found: {username in users}")
 
-        if username in users and check_password_hash(users[username]['password'], password):
-            session['user'] = username
-            session['role'] = users[username].get('role', 'member')
-            return redirect(url_for('dashboard'))
-        else:
-            return render_template('login.html', error="Invalid username or password.")
-    
+        if username in users:
+            hash_check = check_password_hash(users[username]['password'], password)
+            print(f"[DEBUG] Password hash check result: {hash_check}")
+
+            if hash_check:
+                session['user'] = username
+                session['role'] = users[username].get('role', 'member')
+                print(f"[DEBUG] Session set: {session}")
+                return redirect(url_for('dashboard'))
+
+        return render_template('login.html', error="Invalid username or password.")
+
     return render_template('login.html')
 
 @app.route('/dashboard')
 def dashboard():
+    print(f"[DEBUG] Session contents at dashboard: {dict(session)}")
     if 'user' not in session:
+        print("[DEBUG] No user in session, redirecting to login.")
         return redirect(url_for('login'))
 
     return render_template(

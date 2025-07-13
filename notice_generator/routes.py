@@ -12,7 +12,7 @@ OUTPUT_FOLDER = "generated"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
-@notice_bp.route('/notice', methods=['GET', 'POST'])
+@notice_bp.route('/notice', methods=['GET', 'POST'], endpoint='generate_notice')
 def generate_notice():
     message = None
     user = session.get('user', 'guest')

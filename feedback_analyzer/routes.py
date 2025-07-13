@@ -3,7 +3,7 @@ import pandas as pd
 
 feedback_bp = Blueprint('feedback', __name__, template_folder='templates')
 
-@feedback_bp.route('/feedback', methods=['GET', 'POST'])
+@feedback_bp.route('/feedback', methods=['GET', 'POST'],endpoint='feedback_analyzer')
 def feedback_analyzer():
     feedback_data = None
     avg_score = None

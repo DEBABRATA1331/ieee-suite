@@ -76,6 +76,10 @@
 <body>
     <form class="login-card" method="POST">
         <h2>IEEE ExCom Login</h2>
+        {% if error %}
+        <p style="color: red; text-align: center;">{{ error }}</p>
+        {% endif %}
+
         <input type="text" name="username" placeholder="Username" required autofocus>
         <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>

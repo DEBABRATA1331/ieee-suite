@@ -10,7 +10,7 @@ GENERATED_FOLDER = 'generated'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(GENERATED_FOLDER, exist_ok=True)
 
-@excom_bp.route('/email', methods=['GET', 'POST'])
+@excom_bp.route('/email', methods=['GET', 'POST'], endpoint='bulk_email')
 def bulk_email():
     message = ''
     user = session.get('user', 'guest')
@@ -37,7 +37,7 @@ def bulk_email():
     )
 
 
-@excom_bp.route('/mom', methods=['GET', 'POST'])
+@excom_bp.route('/mom', methods=['GET', 'POST'],endpoint='mom_generator')
 def mom_generator():
     message = ''
     user = session.get('user', 'guest')

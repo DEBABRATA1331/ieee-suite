@@ -3,23 +3,23 @@ from werkzeug.security import generate_password_hash
 
 users = {
     "chair": {
-        "password": generate_password_hash("ieee123"),
+        "password": str(generate_password_hash("ieee123")),
         "role": "chair"
     },
     "secretary": {
-        "password": generate_password_hash("sb2024"),
+        "password": str(generate_password_hash("sb2024")),
         "role": "secretary"
     },
     "vicechair": {
-        "password": generate_password_hash("vssutvc"),
+        "password": str(generate_password_hash("vssutvc")),
         "role": "vicechair"
     },
     "treasurer": {
-        "password": generate_password_hash("bankieee"),
+        "password": str(generate_password_hash("bankieee")),
         "role": "treasurer"
     },
     "webmaster": {
-        "password": generate_password_hash("ieeedev"),
+        "password": str(generate_password_hash("ieeedev")),
         "role": "webmaster"
     }
 }
