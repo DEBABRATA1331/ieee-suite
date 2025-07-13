@@ -10,7 +10,6 @@ import json
 
 # Load environment variables
 load_dotenv()
-DISABLE_LOGIN = os.getenv("DISABLE_LOGIN", "False") == "True"
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "fallback-secret")
@@ -68,20 +67,17 @@ def login():
 @app.route('/dashboard')
 def dashboard():
     print(f"[DEBUG] Session contents at dashboard: {dict(session)}")
-    print(f"[DEBUG] Login enforcement: {not DISABLE_LOGIN}")
-
-    if not DISABLE_LOGIN and 'user' not in session:
-        print("[DEBUG] Login required but user not in session. Redirecting.")
+    if 'user' not in session:
+        print("[DEBUG] No user in session, redirecting to login.")
         return redirect(url_for('login'))
 
     return render_template(
         'dashboard.html',
-        user=session.get('user', 'guest'),
+        user=session['user'],
         role=session.get('role', 'member'),
         current_year=datetime.now().year,
         current_date=datetime.now().strftime('%A, %B %d, %Y')
     )
-
 
 @app.route('/logout')
 def logout():
