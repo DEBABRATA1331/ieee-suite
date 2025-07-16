@@ -44,19 +44,19 @@ def mom_generator():
     role = session.get('role', 'member')
 
     if request.method == 'POST':
-        title = request.form['title']
+        agenda = request.form['agenda']
         date = request.form['date'] or datetime.now().strftime('%B %d, %Y')
         attendees = request.form['attendees']
-        points = request.form['discussion_points']
+        discussion = request.form['discussion']
 
         doc = Document()
         doc.add_heading('Minutes of Meeting', 0)
-        doc.add_paragraph(f"Title: {title}")
+        doc.add_paragraph(f"Title: {agenda}")
         doc.add_paragraph(f"Date: {date}")
         doc.add_paragraph(f"Attendees: {attendees}")
         doc.add_paragraph("Discussion Points:")
 
-        for point in points.splitlines():
+        for point in discussion.splitlines():
             doc.add_paragraph(f"- {point}", style='List Bullet')
 
         filename = f"MOM_{datetime.now().strftime('%Y%m%d_%H%M%S')}.docx"
