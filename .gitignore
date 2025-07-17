@@ -1,0 +1,33 @@
+# --- Python Virtual Environment ---
+# Ignore the virtual environment folder to avoid committing packages
+venv/
+.venv/
+env/
+ENV/
+
+# --- Application-Specific Folders ---
+# Ignore folders for user uploads and generated documents
+uploads/
+generated/
+
+# --- Python Cache and Bytecode ---
+# Ignore Python's cache folders and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- Environment Variables ---
+# Ignore local environment variable files that may contain secrets
+.env
+.flaskenv
+
+# --- Operating System Files ---
+# Ignore common OS-generated files
+.DS_Store
+Thumbs.db
+
+# --- IDE/Editor-Specific Files ---
+# Ignore configuration files from popular editors like VSCode
+.vscode/
+.idea/
