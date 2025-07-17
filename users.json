@@ -1,30 +1,22 @@
-import json
-from werkzeug.security import generate_password_hash
-
-users = {
+{
     "chair": {
-        "password": str(generate_password_hash("ieee123")),
+        "password": "scrypt:32768:8:1$QAhk1lEqsfMT8Lut$91d477c46d7c61781ebeb82df06785f70f8e813dbd7efdcf32b472e230b315be36d4ee40af9ba23ef0fdfc71bc8160a98f4367781814cb06c73a376ddd7620ac",
         "role": "chair"
     },
     "secretary": {
-        "password": str(generate_password_hash("sb2024")),
+        "password": "scrypt:32768:8:1$WiW91Gf0rl2mD5fm$d915ea783a72c4e87e1bec2f938b474ee1d79d5fb9a5e8950f8ba39b3b696fc3f99a9a58102ba23f5b72f9c7283e68c53cb9504b45d46e4086ba9fc18ac46b16",
         "role": "secretary"
     },
     "vicechair": {
-        "password": str(generate_password_hash("vssutvc")),
+        "password": "scrypt:32768:8:1$35te2yjOM0AgO8IW$c437ad54e9efff430c98ee781eefde526c8cc3c5c5b7e6ece3791627168c6b3336154d270752812f7756e693b8fe789691fa51f3f9510e005ef2600c34d19d75",
         "role": "vicechair"
     },
     "treasurer": {
-        "password": str(generate_password_hash("bankieee")),
+        "password": "scrypt:32768:8:1$L1qeZbSiFEwUjH5Y$07a817844fe24876a55bf4499ff9e15f6a60625d04d0ba09e883b92f658c38127bf490138fb6471550e33ad93d0e8777adb83cf0fb52b99ac837b726b23f8d06",
         "role": "treasurer"
     },
     "webmaster": {
-        "password": str(generate_password_hash("ieeedev")),
+        "password": "scrypt:32768:8:1$dbXG2dSJXMhXYbKx$2bb31e185b69720f9954d54c75a3d8c8caad2718a6d1f3a600bdb1b27682b32c5385af1d0d82caf6ae4fbca002269f537d111929ea2f07132a6dd515d102c550",
         "role": "webmaster"
     }
 }
-
-with open("users.json", "w") as f:
-    json.dump(users, f, indent=4)
-
-print("users.json created with hashed passwords and roles.")

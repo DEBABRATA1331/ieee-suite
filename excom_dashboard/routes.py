@@ -44,10 +44,10 @@ def mom_generator():
     role = session.get('role', 'member')
 
     if request.method == 'POST':
-        title = request.form['title']
+        agenda = request.form['agenda']
         date = request.form['date'] or datetime.now().strftime('%B %d, %Y')
         attendees = request.form['attendees']
-        points = request.form['discussion_points']
+        discussion = request.form['discussion']
 
         doc = Document()
         doc.add_heading('Minutes of Meeting', 0)
