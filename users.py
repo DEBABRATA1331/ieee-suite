@@ -24,7 +24,7 @@ users = {
     }
 }
 
-with open("users.json", "w") as f:
-    json.dump(users, f, indent=4)
+with open("users.py", "w") as f:
+    py.dump(users, f, indent=4)
 
-print("users.json created with hashed passwords and roles.")
+print("users.py created with hashed passwords and roles.")
