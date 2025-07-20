@@ -34,7 +34,7 @@ app.register_blueprint(excom_bp)
 # Load users safely from users.json
 def load_users():
     try:
-        with open('users.json') as f:
+        with open('users.py') as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
